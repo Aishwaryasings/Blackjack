@@ -1,39 +1,45 @@
 import random
 import time
 
-
-                                #jacks     #queen   #king
-deck = (list(range(1,10)) * 4) + [10]*3 + [11]*4 + [12]*4
-points = 0
-dpoints = 0
-dealer_hit = 1
-player_hit = 1
-
-while player_hit == 1:
-
-    #player card
-    print("We are going to remove a card for you!")
+def remove_card(deck, player):
+    print("We are going to remove a card for "+player + "!")
     time.sleep(3)
     card = deck.pop(random.randint(0,len(deck)-1))
     if card == 1: 
-        inp = int(input("You got an Ace! Do you want it to be a 1 or 11? "))
+        inp = int(input(player+ " got an Ace! Do you want it to be a 1 or 11? "))
         if inp == 1: 
             card = 1
         elif inp == 11:
             card = 11
         else: 
             print("Error! Did not type in 1 or 11! End of Game!")
-            break
+            card = -1
     elif card >= 2 and card <= 9:
-        print("You got a "+ str(card))
+        print(player + " got a "+ str(card))
     elif card == 10: 
-        print("You got a Jack!")
+        print(player + " got a Jack!")
     elif card == 11: 
-        print("You got a Queen!")
+        print(player + " got a Queen!")
         card = 10
     else: 
-        print("You got a King!")
+        print(player + " got a King!")
         card = 10
+    return deck, card
+
+if __name__ == "__main__":
+                                   #jacks     #queen   #king
+    deck = (list(range(1,10)) * 4) + [10]*3 + [11]*4 + [12]*4
+    points = 0
+    dpoints = 0
+    dealer_hit = 1
+    player_hit = 1
+
+    while player_hit == 1:
+
+    
+    
+    #player card
+    
     points = points + int(card)
     time.sleep(3)
     print("Your Total Points Is "+str(points))
