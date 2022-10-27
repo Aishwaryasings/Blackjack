@@ -18,3 +18,29 @@ and will stop hitting if greater than 16
 will win if greater than dealer 
 and doesn't bust
 
+5th round --> Did not think black jack would be this complicated
+break this into functions
+
+main 
+deck 
+dpoints
+dhit 
+phit 
+points 
+
+player turn function
+inputs points, phit 
+outputs points, phit as a tuple
+
+dealer turn function
+inputs dpoints, dhit
+outputs dpoints, dhit as a tuple 
+
+card drawing function 
+input deck 
+outputs card and deck 
+
+score deciding function 
+input points, dpoints, phit
+output points, dpoints, phit
+

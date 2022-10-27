@@ -1,12 +1,7 @@
 import random
 import time
 
-from cv2 import bilateralFilter
 
-#All the things I need to make a blackjack game
-#1) a deck of cards - array of 1 to 10 with enough 10s to correspond to kings and queens and jacks)
-#3) player points - int
-#4) player hit - boolean 
                                 #jacks     #queen   #king
 deck = (list(range(1,10)) * 4) + [10]*3 + [11]*4 + [12]*4
 points = 0
