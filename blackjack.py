@@ -1,4 +1,3 @@
-from os import remove
 import random
 import time
 
@@ -66,17 +65,21 @@ def remove_card(deck, player, points = 0):
     print("We are going to remove a card for "+player + "!")
     time.sleep(3)
     card = deck.pop(random.randint(0,len(deck)-1))
+    inp = 0
     
     #ace for player 
-    if card == 1 and player == "you": 
-        inp = int(input(player+ " got an Ace! Do you want it to be a 1 or 11? "))
-        if inp == 1: 
-            card = 1
-        elif inp == 11:
-            card = 11
-        else: 
-            print("Error! Did not type in 1 or 11! End of Game!")
-            card = -1
+    if card == 1 and player == "you":
+        while inp != 1 and inp != 11:
+            inp = int(input(player+ " got an Ace! Do you want it to be a 1 or 11? "))
+            if inp == 1: 
+                card = 1
+                break
+            elif inp == 11:
+                card = 11
+                break
+            else: 
+                print("Error! Did not type in 1 or 11! Try Again!")
+                card = -1
     
     #ace for dealer 
     elif card == 1 and player == "the dealer":
@@ -118,10 +121,14 @@ def bust_check(points, dpoints):
     return True
 
 def ask_hit():
-    inp = input("Do you want to hit or stay? Type Hit or Stay exactly ")
-    time.sleep(1)
-    print("You said: "+str(inp))
-    time.sleep(3)
+    inp = 0 
+    while inp != "Hit" and inp != "Stay":
+        inp = input("Do you want to hit or stay? Type Hit or Stay exactly ")
+        time.sleep(1)
+        print("You said: "+str(inp))
+        if inp != "Hit" and inp != "Stay":
+            print("You need to type in 'Hit' or 'Stay' exactly!")
+        time.sleep(3)
     return inp
 
 def determine_winner(points, dpoints):
@@ -161,13 +168,12 @@ def next_round(points, dpoints, player_hit, dealer_hit):
         else:
             print("Error! Wrong Input! End of Game!")
             error = 1
-    elif player_hit == 0 and dealer_hit == 0: 
+    elif player_hit == 0 and dealer_hit == 0:
+        print("The Dealer Has Decided to Stay!") 
         determine_winner(points, dpoints)
-    elif player_hit == 0 and dealer_hit == 1: 
-        pass
     else: 
-        print("Error! Wrong CHEESE! End of Game!")
-        error = 1
+        pass
+
     return player_hit, dealer_hit, error
 
 if __name__ == "__main__":
@@ -190,6 +196,7 @@ if __name__ == "__main__":
         deck, points, error, player_hit = player_turn(deck, points, player_hit)
         if error == 1: 
             break
+        
         #dealer turn
         deck, dpoints, dealer_hit = dealer_turn(deck, dpoints, dealer_hit)
 
