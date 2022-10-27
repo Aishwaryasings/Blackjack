@@ -24,24 +24,28 @@ def dealer_turn(deck, dpoints, dealer_hit):
     print("As a reminder, the dealer's total points is "+str(dpoints))
     return deck, dpoints, dealer_hit
 
-def player_turn(deck, points):
+def player_turn(deck, points, player_hit):
     """
-    Runs dealer's turn
+    Runs player's turn
     Parameter deck: deck of cards (array)
     Parameter points: dealer's points (int)
     Returns deck, dpoints, player_hit (will game error out or not --> bool)
     """
     print("It's your turn!")
-    deck, car = remove_card(deck, "You")
-    if car == -1:
-        phit = 0
-        return deck, points, phit
+    error = 0
+    if player_hit == 1: 
+        deck, car = remove_card(deck, "You")
+        if car == -1:
+            player_hit = 1
+            error = 1
+            return deck, points, error
+        else: 
+            points = points + int(car)
+            time.sleep(3)
     else: 
-        points = points + int(car)
-        time.sleep(3)
-        print("Your Total Points Is "+str(points))
-        phit = 1
-        return deck, points, phit 
+        print("You had chosen to stay!")
+    print("Your Total Points Is "+str(points))
+    return deck, points, error, player_hit 
 
 
 
@@ -113,32 +117,58 @@ def bust_check(points, dpoints):
         return False
     return True
 
-def next_round(points, dpoints):
+def ask_hit():
+    inp = input("Do you want to hit or stay? Type Hit or Stay exactly ")
+    time.sleep(1)
+    print("You said: "+str(inp))
+    time.sleep(3)
+    return inp
+
+def determine_winner(points, dpoints):
+    if points > dpoints: 
+        print("You've won! Great job!")
+    elif points < dpoints: 
+        print("You lost to the dealer! Sorry")
+    else:
+        print("You tied!")
+
+def next_round(points, dpoints, player_hit, dealer_hit):
     """
     Checks if there will be next round
     Parameter points: player's points (int)
     Paramater dpoints: dealer's points (int)
     Returns player_hit (bool) --> if next round or not
     """
-    inp = input("Do you want to hit or stay? Type Hit or Stay exactly ")
-    time.sleep(1)
-    print("You said: "+str(inp))
-    time.sleep(3)
-    #if stay, decide who wins
-    if inp == "Stay":
-        player_hit = 0
-        if points > dpoints: 
-            print("You've won! Great job!")
-        elif points < dpoints: 
-            print("You lost to the dealer! Sorry")
+    error = 0
+    assert player_hit == 0 or player_hit == 1, "player"
+    assert dealer_hit == 0 or dealer_hit == 1, "dealer"
+    if player_hit == 1 and dealer_hit == 0: 
+        inp = ask_hit()
+        if inp == "Stay":
+            player_hit = 0
+            determine_winner(points, dpoints)
+        elif inp == "Hit":
+            pass
         else:
-            print("You tied!")
-    elif inp == "Hit":
-        player_hit = 1
-    else:
-        print("Error! Wrong Input! End of Game!")
-        player_hit = 0
-    return player_hit
+            print("Error! Wrong Input! End of Game!")
+            error = 1
+    elif player_hit == 1 and dealer_hit == 1:
+        inp = ask_hit()
+        if inp == "Stay":
+            player_hit = 0
+        elif inp == "Hit":
+            pass
+        else:
+            print("Error! Wrong Input! End of Game!")
+            error = 1
+    elif player_hit == 0 and dealer_hit == 0: 
+        determine_winner(points, dpoints)
+    elif player_hit == 0 and dealer_hit == 1: 
+        pass
+    else: 
+        print("Error! Wrong CHEESE! End of Game!")
+        error = 1
+    return player_hit, dealer_hit, error
 
 if __name__ == "__main__":
     """
@@ -152,25 +182,25 @@ if __name__ == "__main__":
     dealer_hit = 1
     player_hit = 1
 
-    while player_hit == 1:
+    while player_hit == 1 or dealer_hit == 1:
 
         print("Let's start this round!")
 
         #player turn
-        deck, points, player_hit = player_turn(deck, points)
-        if player_hit == 0: 
+        deck, points, error, player_hit = player_turn(deck, points, player_hit)
+        if error == 1: 
             break
-
         #dealer turn
         deck, dpoints, dealer_hit = dealer_turn(deck, dpoints, dealer_hit)
 
         #bust check
-        player_hit = bust_check(points, dpoints)
-        if player_hit == 0: 
-            break 
-
+        if bust_check(points, dpoints) == False: 
+            break
+        
         #next round? 
-        player_hit = next_round(points, dpoints)
+        player_hit, dealer_hit, error = next_round(points, dpoints, player_hit, dealer_hit)
+        if error == 1: 
+            break
 
         
     time.sleep(3)
