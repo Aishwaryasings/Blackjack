@@ -44,3 +44,18 @@ score deciding function
 input points, dpoints, phit
 output points, dpoints, phit
 
+6th edit -> While loop to deal with errors instead of ending game directly
+
+7th edit -> Allow to use ace whenever they want
+not sure how will do this
+
+8th edit -> improve ui 
+line breaks
+better waits 
+better wording in display messages!
+Additional waits 
+
+9th edit -> 
+Multiplayer?????? 
+That will be another day lol 
+Will need to have a player class and a dealer class for this 
