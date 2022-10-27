@@ -14,7 +14,17 @@ while player_hit == 1:
     print("We are going to remove a card for you!")
     time.sleep(3)
     card = deck.pop(random.randint(0,len(deck)-1))
-    if card >= 1 and card <= 9:
+    if card == 1: 
+        inp = input("Do you want it to be a 1 or 11? ")
+        if inp == 1: 
+            card = 1
+        elif inp == 11:
+            card = 11
+        else: 
+            print("Error! Did not type in 1 or 11! End of Game!")
+            break
+
+    elif card >= 2 and card <= 9:
         print("You got a "+ str(card))
     elif card == 10: 
         print("You got a Jack!")
